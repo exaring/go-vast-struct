@@ -685,7 +685,7 @@ type CompanionClickTracking struct {
 	URI string `xml:",cdata"`
 }
 
-//The <AdVerifications> element contains one or more <Verification> elements, which list the resources and metadata
+// The <AdVerifications> element contains one or more <Verification> elements, which list the resources and metadata
 // required to execute third-party measurement code in order to verify creative playback.
 type AdVerifications struct {
 	AdVerifications []Verification `xml:"Verification,omitempty"`
