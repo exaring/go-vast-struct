@@ -1,4 +1,4 @@
-module github.com/albenik/go-vast-struct
+module github.com/exaring/go-vast-struct
 
 go 1.14
 
