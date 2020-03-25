@@ -14,5 +14,5 @@ are missing. We will try to cherry-pick and provide merge requests.
 
 ## Usage
 
-* `go get -u https://github.com/albenik/go-vast-struct`
-* `import "https://github.com/albenik/go-vast-struct"`
+* `go get -u https://github.com/exaring/go-vast-struct`
+* `import "https://github.com/exaring/go-vast-struct"`
