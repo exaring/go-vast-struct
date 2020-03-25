@@ -281,6 +281,10 @@ type Wrapper struct {
 	// xml element within the Extensions element.
 	Extensions      *Extensions      `xml:",omitempty"`
 	AdVerifications *AdVerifications `xml:",omitempty"`
+
+	FallbackOnNoAd           *bool `xml:"fallbackOnNoAd,attr,omitempty"`
+	AllowMultipleAds         *bool `xml:"allowMultipleAds,attr,omitempty"`
+	FollowAdditionalWrappers *bool `xml:"followAdditionalWrappers,attr,omitempty"`
 }
 
 // AdSystem contains information about the system that returned the ad
