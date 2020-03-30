@@ -38,7 +38,7 @@ func (v *VAST) GetMediaFile() (*MediaFile, string) {
 	}
 	for _, ad := range v.Ads {
 		if ad.InLine == nil {
-			return nil, ""
+			continue
 		}
 		inline := ad.InLine
 		for _, creative := range inline.Creatives {
@@ -51,6 +51,46 @@ func (v *VAST) GetMediaFile() (*MediaFile, string) {
 		}
 	}
 	return nil, ""
+}
+
+func (v *VAST) GetBestMediaFile() (*MediaFile, string) {
+	return v.GetBestMediaFileOfMimeTypes([]string{})
+}
+
+func (v *VAST) GetBestMediaFileOfMimeTypes(allowedMimeTypes []string) (*MediaFile, string) {
+	if len(v.Ads) == 0 {
+		return nil, ""
+	}
+	var candidateMediaFile *MediaFile
+	var candidateDuration string
+	for _, ad := range v.Ads {
+		if ad.InLine == nil {
+			continue
+		}
+		inline := ad.InLine
+		for _, creative := range inline.Creatives {
+			if creative.Linear != nil {
+				linear := creative.Linear
+				for i := range linear.MediaFiles {
+					mediaFile := &linear.MediaFiles[i]
+					lenAllowedMimeTypes := len(allowedMimeTypes)
+					mimeFound := lenAllowedMimeTypes == 0
+					for j := 0; !mimeFound && j < lenAllowedMimeTypes; j++ {
+						mimeFound = mediaFile.Type == allowedMimeTypes[j]
+					}
+					if !mimeFound {
+						continue
+					}
+					if candidateMediaFile == nil ||
+						candidateMediaFile.Width*candidateMediaFile.Height < mediaFile.Width*mediaFile.Height {
+						candidateMediaFile = mediaFile
+						candidateDuration = linear.Duration
+					}
+				}
+			}
+		}
+	}
+	return candidateMediaFile, candidateDuration
 }
 
 func (v *VAST) GetClickTroughURL() string {

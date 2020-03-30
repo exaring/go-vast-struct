@@ -73,7 +73,7 @@ func TestInlineLinear(t *testing.T) {
 						}
 						assert.Len(t, linear.VideoClicks.CustomClicks, 0)
 					}
-					if assert.Len(t, linear.MediaFiles, 1) {
+					if assert.Len(t, linear.MediaFiles, 5) {
 						mf := linear.MediaFiles[0]
 						assert.Equal(t, "progressive", mf.Delivery)
 						assert.Equal(t, "video/x-flv", mf.Type)
@@ -83,6 +83,44 @@ func TestInlineLinear(t *testing.T) {
 						assert.Equal(t, true, mf.Scalable)
 						assert.Equal(t, true, mf.MaintainAspectRatio)
 						assert.Equal(t, "http://cdnp.tremormedia.com/video/acudeo/Carrot_400x300_500kb.flv", mf.URI)
+
+						mf = linear.MediaFiles[4]
+						assert.Equal(t, "progressive", mf.Delivery)
+						assert.Equal(t, "video/mp4", mf.Type)
+						assert.Equal(t, 500, mf.Bitrate)
+						assert.Equal(t, 640, mf.Width)
+						assert.Equal(t, 360, mf.Height)
+						assert.Equal(t, true, mf.Scalable)
+						assert.Equal(t, true, mf.MaintainAspectRatio)
+						assert.Equal(t, "http://cdnp.tremormedia.com/video/acudeo/Carrot_640x360.mp4", mf.URI)
+
+						best, duration := v.GetBestMediaFile()
+
+						if assert.NotNil(t, best) {
+							assert.Equal(t, "00:00:30", duration)
+							assert.Equal(t, "progressive", best.Delivery)
+							assert.Equal(t, "video/hls", best.Type)
+							assert.Equal(t, 500, best.Bitrate)
+							assert.Equal(t, 1920, best.Width)
+							assert.Equal(t, 1080, best.Height)
+							assert.Equal(t, true, best.Scalable)
+							assert.Equal(t, true, best.MaintainAspectRatio)
+							assert.Equal(t, "http://cdnp.tremormedia.com/video/acudeo/Carrot_1920x1080.m3u8", best.URI)
+						}
+
+						best, duration = v.GetBestMediaFileOfMimeTypes([]string{"video/foo", "video/mp4"})
+
+						if assert.NotNil(t, best) {
+							assert.Equal(t, "00:00:30", duration)
+							assert.Equal(t, "progressive", best.Delivery)
+							assert.Equal(t, "video/mp4", best.Type)
+							assert.Equal(t, 500, best.Bitrate)
+							assert.Equal(t, 1024, best.Width)
+							assert.Equal(t, 576, best.Height)
+							assert.Equal(t, true, best.Scalable)
+							assert.Equal(t, true, best.MaintainAspectRatio)
+							assert.Equal(t, "http://cdnp.tremormedia.com/video/acudeo/Carrot_1024x576.mp4", best.URI)
+						}
 					}
 				}
 
