@@ -872,3 +872,48 @@ func (v *VAST) formatVastStrings() {
 		}
 	}
 }
+
+func (ad *Ad) GetTrackingEvents() []Tracking {
+	trackingEvents := make([]Tracking, 0, 10)
+
+	if inline := ad.InLine; inline != nil {
+		for i := range inline.Creatives {
+			c := &inline.Creatives[i]
+			linear := c.Linear
+			if linear != nil {
+				trackingEvents = append(trackingEvents, linear.TrackingEvents...)
+			}
+		}
+	}
+	if wrapper := ad.Wrapper; wrapper != nil && len(wrapper.Creatives) > 0 {
+		for i := range wrapper.Creatives {
+			c := &wrapper.Creatives[i]
+			linear := c.Linear
+			if linear != nil {
+				trackingEvents = append(trackingEvents, linear.TrackingEvents...)
+			}
+		}
+	}
+
+	return trackingEvents
+}
+
+func (ad *Ad) GetImpressions() []Impression {
+	if inline := ad.InLine; inline != nil && len(inline.Impressions) > 0 {
+		return inline.Impressions
+	}
+	if wrapper := ad.Wrapper; wrapper != nil && len(wrapper.Impressions) > 0 {
+		return wrapper.Impressions
+	}
+	return []Impression{}
+}
+
+func (ad *Ad) GetErrors() []Error {
+	if inline := ad.InLine; inline != nil && len(inline.Error) > 0 {
+		return inline.Error
+	}
+	if wrapper := ad.Wrapper; wrapper != nil && len(wrapper.Error) > 0 {
+		return wrapper.Error
+	}
+	return []Error{}
+}
