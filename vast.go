@@ -81,10 +81,18 @@ func (v *VAST) GetBestMediaFileOfMimeTypes(allowedMimeTypes []string) (*MediaFil
 					if !mimeFound {
 						continue
 					}
-					if candidateMediaFile == nil ||
-						candidateMediaFile.Width*candidateMediaFile.Height < mediaFile.Width*mediaFile.Height {
+					if candidateMediaFile == nil {
 						candidateMediaFile = mediaFile
 						candidateDuration = linear.Duration
+					} else {
+						candidateResolution := candidateMediaFile.Width * candidateMediaFile.Height
+						mediaFileResolution := mediaFile.Width * mediaFile.Height
+						if candidateResolution < mediaFileResolution ||
+							(candidateResolution == mediaFileResolution &&
+								candidateMediaFile.Bitrate < mediaFile.Bitrate) {
+							candidateMediaFile = mediaFile
+							candidateDuration = linear.Duration
+						}
 					}
 				}
 			}

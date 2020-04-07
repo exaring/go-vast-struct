@@ -73,7 +73,7 @@ func TestInlineLinear(t *testing.T) {
 						}
 						assert.Len(t, linear.VideoClicks.CustomClicks, 0)
 					}
-					if assert.Len(t, linear.MediaFiles, 5) {
+					if assert.Len(t, linear.MediaFiles, 6) {
 						mf := linear.MediaFiles[0]
 						assert.Equal(t, "progressive", mf.Delivery)
 						assert.Equal(t, "video/x-flv", mf.Type)
@@ -84,7 +84,7 @@ func TestInlineLinear(t *testing.T) {
 						assert.Equal(t, true, mf.MaintainAspectRatio)
 						assert.Equal(t, "http://cdnp.tremormedia.com/video/acudeo/Carrot_400x300_500kb.flv", mf.URI)
 
-						mf = linear.MediaFiles[4]
+						mf = linear.MediaFiles[5]
 						assert.Equal(t, "progressive", mf.Delivery)
 						assert.Equal(t, "video/mp4", mf.Type)
 						assert.Equal(t, 500, mf.Bitrate)
@@ -114,12 +114,12 @@ func TestInlineLinear(t *testing.T) {
 							assert.Equal(t, "00:00:30", duration)
 							assert.Equal(t, "progressive", best.Delivery)
 							assert.Equal(t, "video/mp4", best.Type)
-							assert.Equal(t, 500, best.Bitrate)
+							assert.Equal(t, 1500, best.Bitrate)
 							assert.Equal(t, 1024, best.Width)
 							assert.Equal(t, 576, best.Height)
 							assert.Equal(t, true, best.Scalable)
 							assert.Equal(t, true, best.MaintainAspectRatio)
-							assert.Equal(t, "http://cdnp.tremormedia.com/video/acudeo/Carrot_1024x576.mp4", best.URI)
+							assert.Equal(t, "http://cdnp.tremormedia.com/video/acudeo/Carrot_1024x576-1500.mp4", best.URI)
 						}
 					}
 				}
